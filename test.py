@@ -38,5 +38,13 @@ print(vectordb2)
 
 # Case 3: Ingest representation
 vectordb3 = VectorDB({})
-vectordb3.ingest("test", [5.6, 4.2, 7.9])
+vectordb3.ingest(Vector("x", [5.6, 4.2, 7.9]))
 print(vectordb3)
+
+vectordb4 = VectorDB({
+  "test1": Vector("x", [6.7, 4.4, 3.2]),
+  "test2": Vector("y", [8.9, 2.2, 1.6]),
+  "test3": Vector("z", [5.6, 2.3, 4.3])
+})
+
+print(vectordb4.search(Vector("u", [3.5, 6.6, 1.2])))
