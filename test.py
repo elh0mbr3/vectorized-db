@@ -17,3 +17,8 @@ print(vector1.unit_vector())
 # vector4 = Vector([5, 4, 3, 1])
 # vector5 = Vector([3, 2])
 # print(vector4.add(vector5))
+
+# Testing cosine_similarity():
+# vector10, vector11 = Vector([0.0, 0.0]), Vector([1.0, 2.0])
+# print(vector10.cosine_similarity(vector11))
+# Passes all cases

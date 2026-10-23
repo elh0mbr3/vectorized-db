@@ -65,3 +65,13 @@ class Vector:
     for entry in self.entries:
       temp.append(entry / self.magnitude)
     return Vector(temp)
+  
+  # Returns the angle between two vectors
+  def cosine_similarity(self, vector) -> float:
+    if self.get_size() != vector.get_size():
+      raise DifferentDimensionsError("Vectors appear to have different number of dimensions.")
+    dot_product: float = self.dot_product(vector)
+    combined_magnitude: float = self.magnitude * vector.magnitude
+    if combined_magnitude == 0:
+      return 0.0
+    return dot_product / combined_magnitude
