@@ -4,6 +4,9 @@
 from math import sqrt
 from math import pow
 
+class DifferentDimensionsError(Exception):
+  pass
+
 # A vector class
 class Vector:
   entries: list
@@ -16,42 +19,42 @@ class Vector:
   
   # Overrides __str__ method to return a string of vector entries without using .entries attribute
   def __str__(self):
-    return f"{self.entries}"
+    return f"{self.entries}"   
   
-  # Adds an entry to a vector
-  def add_entry(self, entry: float):
-    self.entries.append(entry)    
-  
-  # Returns the number of vector entries
+  # Returns the number of vector entries (should be int)
   def get_size(self) -> int:
     return len(self.entries)
   
   # Calculates a dot product (scalar value)
-  def dot_product(self, vector) -> int:
-    sum: int = 0
+  def dot_product(self, vector) -> float:
+    if self.get_size() != vector.get_size():
+      raise DifferentDimensionsError("Vectors appear to have different number of dimensions.")
+    sum: float = 0.0
     for i in range(0, self.get_size()):
       sum += self.entries[i] * vector.entries[i]
     return sum 
   
   # Adds two vectors and returns a new vector
   def add(self, vector):
+    if self.get_size() != vector.get_size():
+      raise DifferentDimensionsError("Vectors appear to have different number of dimensions.")
     temp: list = []
     for i in range(0, self.get_size()):
       temp.append(self.entries[i] + vector.entries[i])
     return Vector(temp)
   
   # Multiplies vector entries by a scalar number
-  def multiply_by(self, scalar: int):
+  def multiply_by(self, scalar: float):
     temp: list = []
     for entry in self.entries:
       entry *= scalar
       temp.append(entry)
-    self.entries = temp
+    return Vector(temp)
     
   # Returns a magnitude value
   def calculate_magnitude(self) -> float:
     temp: list = []
-    sum: int = 0
+    sum: float = 0.0
     for entry in self.entries:
       sum += pow(entry, 2)
     return sqrt(sum)
@@ -62,3 +65,13 @@ class Vector:
     for entry in self.entries:
       temp.append(entry / self.magnitude)
     return Vector(temp)
+  
+  # Returns the cosine of the angle between two vectors
+  def cosine_similarity(self, vector) -> float:
+    if self.get_size() != vector.get_size():
+      raise DifferentDimensionsError("Vectors appear to have different number of dimensions.")
+    dot_product: float = self.dot_product(vector)
+    combined_magnitude: float = self.magnitude * vector.magnitude
+    if combined_magnitude == 0:
+      return 0.0
+    return dot_product / combined_magnitude
