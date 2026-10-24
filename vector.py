@@ -9,17 +9,23 @@ class DifferentDimensionsError(Exception):
 
 # A vector class
 class Vector:
+  name: str
   entries: list
   magnitude: float
   
   # Initialises a vector object
-  def __init__(self, entries: list):
+  def __init__(self, name, entries: list):
+    self.name = name
     self.entries = entries
     self.magnitude = self.calculate_magnitude()
   
   # Overrides __str__ method to return a string of vector entries without using .entries attribute
   def __str__(self):
-    return f"{self.entries}"   
+    return f"{self. name} = {self.entries}"
+  
+  # Overrides __repr__ method to make the representation look identical to the string version
+  def __repr__(self):
+    return self.__str__()
   
   # Returns the number of vector entries (should be int)
   def get_size(self) -> int:
