@@ -3,6 +3,7 @@
 # Import
 from vector import Vector
 from vectordb import VectorDB
+from embedder import process_words, unique_set, build_vector
 
 # Testing vector methods and attributes:
 # vector1 = Vector([1.5, 3.4, 1.7])
@@ -48,3 +49,9 @@ vectordb4 = VectorDB({
 })
 
 print(vectordb4.search(Vector("u", [3.5, 6.6, 1.2])))
+
+string: str = "Python is fast, but C is faster!"
+
+process_words(string)
+vector1: Vector = build_vector(unique_set(process_words(string)), process_words(string))
+print(Vector)
