@@ -18,7 +18,7 @@ def unique_set(word_list: list) -> set:
   return set(word_list)
 
 # Returns a vector built of counters of unique words appearing in a list of words
-def build_vector(word_set: set, word_list: list) -> Vector:
+def build_vector(word_set: set, word_list: list, name: str = "") -> Vector:
   numbers: list[int] = []
   sorted_set = sorted(word_set)
   for word in sorted_set:
