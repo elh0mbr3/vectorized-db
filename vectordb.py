@@ -15,7 +15,7 @@ class VectorDB:
       self.vectors = vectors
     self.master_vocabulary = set()
   
-  # Returns a string Sof vectors
+  # Returns a string of vectors
   def __str__(self):
     return f"{self.master_vocabulary} <> {self.vectors}"
   

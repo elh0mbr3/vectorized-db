@@ -1,6 +1,7 @@
 __pycache__/
-/database/
+database/
 *.txt
 /test/
 test_files.py 
 test.py
+.venv/
