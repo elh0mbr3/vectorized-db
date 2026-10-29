@@ -15,12 +15,22 @@
     <p id="vocab-container">Loading container...</p>
   </div>
 
+  <hr>
+
   <div>
     <h3>Document vectors</h3>
-    <ul id="vector-container">
-      Loading container...
-    </ul>
+    <ul id="vector-container"></ul>
   </div>
+
+  <hr>
+
+  <div>
+    <h3>Search documents</h3>
+    <input id="search-box" type="text" placeholder="Type words to search...">
+    <button onclick="performSearch()" id="search-button">Search</button>
+    <ul id="search-results"></ul>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
