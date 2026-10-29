@@ -38,18 +38,19 @@ class VectorDB:
     return self.vectors.pop(name).pop("vector")
   
   # Returns a dictionary of sorted key-value elements depending how similar they are to an input query
-  def search(self, vector: Vector) -> dict:
-    sorted: dict = {}
+  def search(self, search_input: str) -> dict:
+    processed_query: list = process_words(search_input)
+    query_vector: Vector = build_vector(self.master_vocabulary, processed_query, name="search_query")
+    
+    sorted_dict: dict = {}
     temp: list = []
-    for v in self.vectors.values():
-      cosine: float = v["vector"].cosine_similarity(vector)
-      temp.append(tuple((v["vector"], cosine)))
-    for i in range(0, len(temp) - 1):
-      for j in range(i+1, len(temp)):
-        if temp[i][1] < temp[j][1]:
-          swap = temp[i]
-          temp[i] = temp[j]
-          temp[j] = swap
+    
+    for doc_name, data in self.vectors.items():
+      cosine: float = data["vector"].cosine_similarity(query_vector)
+      temp.append((doc_name, cosine))
+      
+    temp = sorted(temp, key=lambda x: x[1], reverse=True)
+    
     for v in temp:
-      sorted[v[0]] = v[1]
-    return sorted
+      sorted_dict[v[0]] = v[1]
+    return sorted_dict
