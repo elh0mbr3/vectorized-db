@@ -17,7 +17,7 @@ class VectorDB:
   
   # Returns a string Sof vectors
   def __str__(self):
-    return f"{self.vectors}"
+    return f"{self.master_vocabulary} <> {self.vectors}"
   
   # Adds a string to process it and adds it to a master_vocabulary
   def ingest(self, name: str, text_input: str):
