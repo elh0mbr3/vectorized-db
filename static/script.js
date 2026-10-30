@@ -1,5 +1,5 @@
 function checkStatus() {
-  fetch("http://localhost:8000/api/status")
+  fetch("/api/status")
   .then(() => {
     document.querySelector('#server-status').textContent = "Online";
     document.getElementById('server-status').style.color = "green";
@@ -11,7 +11,7 @@ function checkStatus() {
 }
 
 function fetchVectors() {
-  fetch("http://localhost:8000/api/vectors")
+  fetch("/api/vectors")
   .then(response => response.json())
   .then(data => {
     document.getElementById("vocab-container").textContent = data.master_vocabulary.join(", ");
@@ -36,7 +36,7 @@ function performSearch() {
   const resultsList = document.getElementById("search-results");
   resultsList.innerHTML = "<li>Searching...</li>";
 
-  fetch(`http://localhost:8000/api/search?search_input=${encodeURIComponent(query)}`)
+  fetch(`/api/search?search_input=${encodeURIComponent(query)}`)
   .then(response => response.json())
   .then(data => {
     console.log("Search payload:", data);
