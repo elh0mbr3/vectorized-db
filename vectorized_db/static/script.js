@@ -54,5 +54,23 @@ function performSearch() {
   })
 }
 
+async function uploadDocument() {
+  const fileInput = document.getElementById('docUpload');
+  if (fileInput.files.length === 0) return alert("Please select a file");
+  const formData = new FormData();
+  formData.append("file", fileInput.files[0]);
+  const response = await fetch('/api/upload', {
+    method: 'POST',
+    body: formData
+  });
+
+  if (response.ok) {
+    fetchVectors();
+    alert("Document uploaded successfully!");
+  } else {
+    alert("Upload failed.");
+  }
+}
+
 setInterval(checkStatus, 5000)
 fetchVectors()
