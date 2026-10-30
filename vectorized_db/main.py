@@ -4,9 +4,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from vectordb import VectorDB
-from file_handler import load_vectors
+from vectorized_db.vectordb import VectorDB
+from vectorized_db.file_handler import load_vectors
 import uvicorn
+import os
 
 vector_db: VectorDB = load_vectors()
 print(f"Total documents loaded: {len(vector_db.vectors)}")
@@ -31,8 +32,14 @@ def load_dictionary():
 @app.get(path="/api/search")
 def search(search_input: str):
   return vector_db.search(search_input)
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+static_dir = os.path.join(current_dir, "static")
   
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
-  
+app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
+
+def start_server():
+  uvicorn.run("vectorized_db.main:app", host="localhost", port=8000, reload=False)
+
 if __name__ == "__main__":
-  uvicorn.run(app=app, host="localhost", port=8080)
+  start_server()

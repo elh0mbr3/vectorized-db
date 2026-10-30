@@ -1,5 +1,5 @@
-from vectordb import VectorDB
-from vector import Vector
+from vectorized_db.vectordb import VectorDB
+from vectorized_db.vector import Vector
 import json
 
 # Stores VectordDB.vectors in a json file
