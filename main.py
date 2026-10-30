@@ -1,6 +1,9 @@
 # that's main.py
+
+# Imports
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from vectordb import VectorDB
 from file_handler import load_vectors
 import uvicorn
@@ -10,6 +13,7 @@ print(f"Total documents loaded: {len(vector_db.vectors)}")
 
 app: FastAPI = FastAPI()
 app.add_middleware(CORSMiddleware, allow_methods=["*"], allow_credentials=True, allow_origins=["*"], allow_headers=["*"])
+
 
 @app.get("/api/status")
 def return_status():
@@ -28,5 +32,7 @@ def load_dictionary():
 def search(search_input: str):
   return vector_db.search(search_input)
   
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
+  
 if __name__ == "__main__":
-  uvicorn.run(app=app, host="localhost", port=8000)
+  uvicorn.run(app=app, host="localhost", port=8080)
