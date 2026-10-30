@@ -1,11 +1,11 @@
 # that's main.py
 
 # Imports
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from vectorized_db.vectordb import VectorDB
-from vectorized_db.file_handler import load_vectors
+from vectorized_db.file_handler import load_vectors, store_vectors
 import uvicorn
 import os
 
@@ -33,13 +33,22 @@ def load_dictionary():
 def search(search_input: str):
   return vector_db.search(search_input)
 
+@app.post("/api/upload")
+async def upload_document(file: UploadFile = File(...)):
+  content = await file.read()
+  text_input = content.decode("utf-8")
+  doc_name = file.filename.replace(".txt", "")
+  vector_db.ingest(doc_name, text_input)
+  store_vectors(vector_db)
+  return {"message": "Success"}
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 static_dir = os.path.join(current_dir, "static")
   
 app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
 
 def start_server():
-  uvicorn.run("vectorized_db.main:app", host="localhost", port=8000, reload=False)
+  uvicorn.run("vectorized_db.main:app", host="127.0.0.1", port=8000, reload=False)
 
 if __name__ == "__main__":
   start_server()
