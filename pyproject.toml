@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vectorized-db"
+version = "0.1.0"
+dependencies = ["fastapi", "uvicorn"]
+
+[project.scripts]
+vectordb-ui = "vectorized_db.main:start_server"
+
+[tool.setuptools]
+packages = ["vectorized_db"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+vectorized_db = ["static/*"]

@@ -1,6 +1,6 @@
 # Imports
-from vector import Vector
-from embedder import unique_set, build_vector, process_words
+from vectorized_db.vector import Vector
+from vectorized_db.embedder import unique_set, build_vector, process_words
 
 # A vector database class
 class VectorDB:

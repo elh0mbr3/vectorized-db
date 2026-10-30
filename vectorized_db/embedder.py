@@ -1,5 +1,5 @@
 import re
-from vector import Vector
+from vectorized_db.vector import Vector
 
 # Returns a list of split words from a given string input
 def process_words(words: str) -> list:
