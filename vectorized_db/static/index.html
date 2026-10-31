@@ -7,36 +7,36 @@
   <title>VectorizedDB</title>
 </head>
 <body>
-  <img src="Vectorized-DB.png" style="max-height: 500px; align-self: center;">
+  <img src="Vectorized-DB.png" class="logo">
+
   <div>Backend status: <span id="server-status" style="font-weight: bold;">Checking...</span></div>
-  <hr>
 
   <div>
     <h3>Master vocabulary:</h3>
-    <p id="vocab-container">Loading container...</p>
+    <p id="vocab-container" class="results-output">Loading container...</p>
   </div>
-
-  <hr>
 
   <div>
     <h3>Document vectors:</h3>
-    <ul id="vector-container"></ul>
+    <ul id="vector-container" class="results-output"></ul>
   </div>
-
-  <hr>
 
   <div>
     <h3>Search documents</h3>
-    <input id="search-box" type="text" placeholder="Type words to search...">
-    <button onclick="performSearch()" id="search-button">Search</button>
+    <div class="form-group">
+      <input id="search-box" type="text" placeholder="Type words to search...">
+      <button onclick="performSearch()" id="search-button">Search</button>
+    </div>
     <ul id="search-results"></ul>
   </div>
 
-  <hr>
-
   <div class="upload-section">
-    <input type="file" id="docUpload" accept=".txt"><br><br>
-    <button onclick="uploadDocument()">Upload Document</button>
+    <h3>Upload new document</h3>
+    <div class="form-group">
+      <input type="file" id="docUpload" accept=".txt"><br><br>
+      <button onclick="uploadDocument()">Upload Document</button>
+    </div>
+    <p id="upload-status"></p>
   </div>
 
   <script src="script.js"></script>
