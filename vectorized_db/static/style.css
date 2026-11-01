@@ -85,3 +85,18 @@ pre, .results-output {
   color: #dc2626;
   font-weight: 500;
 }
+
+.delete-btn {
+  color: #dc2626;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.2s ease;
+  background: none;
+}
+
+.delete-btn:hover {
+  color: #991b1b;
+  text-decoration: underline;
+  background: none;
+}

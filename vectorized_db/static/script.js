@@ -13,6 +13,22 @@ function checkStatus() {
   });
 }
 
+// Deletes a document
+function deleteDocument(docName) {
+  const isConfirmed = confirm(`Are you sure you want to delete "${docName}"?`)
+  if (!isConfirmed) return;
+
+  fetch(`/api/delete?doc_name=${encodeURIComponent(docName)}`, { method: "DELETE"})
+  .then(response => {
+    if (response.ok) {
+      fetchVectors(); // refreshes the UI immediately after successful deletion
+    } else {
+      alert("Failed to delete document from the server.");
+    }
+  })
+  .catch(error => console.error("Error deleting document:", error));
+}
+
 // Fetches the latest vocabulary and vector data from the backend to populate the UI
 function fetchVectors() {
   fetch("/api/vectors")
@@ -24,9 +40,23 @@ function fetchVectors() {
     // Clear and rebuild the list of document vectors
     const vectorsList = document.getElementById("vector-container");
     vectorsList.innerHTML = "";
+
     for (const [docName, vectorArray] of Object.entries(data.vector)) {
       const listItem = document.createElement("li");
-      listItem.textContent = `${docName} : [${vectorArray.join(", ")}]`;
+      listItem.style.display = "flex";
+      listItem.style.justifyContent = "space-between";
+      listItem.style.alignItems = "center";
+      listItem.style.padding = "5px 0";
+
+      // Calculate active dimensions (non-zero values)
+      const uniqueWords = vectorArray.filter(val => val > 0).length;
+
+      // Shows metadata instead of raw floats
+      listItem.innerHTML = `
+        <span><strong>${docName}</strong> - ${uniqueWords} unique words</span>
+        <button onclick="deleteDocument('${docName}')" class="delete-btn">Delete</button>
+      `;
+
       vectorsList.appendChild(listItem);
     }
   })

@@ -4,6 +4,7 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi import HTTPException
 from vectorized_db.vectordb import VectorDB
 from vectorized_db.file_handler import load_vectors, store_vectors
 import uvicorn
@@ -14,7 +15,6 @@ print(f"Total documents loaded: {len(vector_db.vectors)}")
 
 app: FastAPI = FastAPI()
 app.add_middleware(CORSMiddleware, allow_methods=["*"], allow_credentials=True, allow_origins=["*"], allow_headers=["*"])
-
 
 @app.get("/api/status")
 def return_status():
@@ -41,6 +41,20 @@ async def upload_document(file: UploadFile = File(...)):
   vector_db.ingest(doc_name, text_input)
   store_vectors(vector_db)
   return {"message": "Success"}
+
+@app.delete("/api/delete")
+async def delete_document(doc_name: str):
+  # Checks if document exists
+  if doc_name not in vector_db.vectors:
+    raise HTTPException(status_code=404, detail="Document not found")
+  
+  # Removes the document vector
+  del vector_db.vectors[doc_name]
+  
+  # Saves the updated state to disk to ensure the deletion persists across reboots
+  store_vectors(vector_db)
+  
+  return {"message": f"Successfully deleted {doc_name}"}
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 static_dir = os.path.join(current_dir, "static")
