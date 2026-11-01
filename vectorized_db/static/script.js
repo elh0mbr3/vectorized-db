@@ -34,12 +34,23 @@ function fetchVectors() {
   fetch("/api/vectors")
   .then(response => response.json())
   .then(data => {
-    // Display the master vocabulary list
-    document.getElementById("vocab-container").textContent = data.master_vocabulary.join(", ");
+        // Displays the master vocabulary list as a scrollable container
+    const vocabContainer = document.getElementById("vocab-container");
+    const totalWords = data.master_vocabulary.length
+    const tagsHtml = data.master_vocabulary
+    .map(word => `<span class="vocab-tag">${word}</span>`)
+    .join("");
+
+    vocabContainer.innerHTML = `
+      <div><strong>Total global dimensions:</strong> ${totalWords}</div>
+      <div class="vocab-scroll">${tagsHtml}</div>
+    `
     
-    // Clear and rebuild the list of document vectors
+    // Clears and rebuild the list of document vectors
     const vectorsList = document.getElementById("vector-container");
     vectorsList.innerHTML = "";
+
+
 
     for (const [docName, vectorArray] of Object.entries(data.vector)) {
       const listItem = document.createElement("li");
@@ -48,7 +59,7 @@ function fetchVectors() {
       listItem.style.alignItems = "center";
       listItem.style.padding = "5px 0";
 
-      // Calculate active dimensions (non-zero values)
+      // Calculates active dimensions (non-zero values)
       const uniqueWords = vectorArray.filter(val => val > 0).length;
 
       // Shows metadata instead of raw floats

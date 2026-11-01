@@ -100,3 +100,21 @@ pre, .results-output {
   text-decoration: underline;
   background: none;
 }
+
+.vocab-scroll {
+  max-height: 150px;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 5px;
+}
+
+.vocab-tag {
+  background-color: #e5e7eb;
+  color: #374151;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
