@@ -1,10 +1,8 @@
 # that's main.py
 
 # Imports
-from fastapi import FastAPI, UploadFile, File
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.staticfiles import StaticFiles
-from fastapi import HTTPException
 from vectorized_db.vectordb import VectorDB
 from vectorized_db.file_handler import load_vectors, store_vectors, db_path
 import uvicorn
@@ -35,7 +33,6 @@ if is_first_run:
   store_vectors(vector_db)
 
 app: FastAPI = FastAPI()
-app.add_middleware(CORSMiddleware, allow_methods=["*"], allow_credentials=True, allow_origins=["*"], allow_headers=["*"])
 
 @app.get("/api/status")
 def return_status():
