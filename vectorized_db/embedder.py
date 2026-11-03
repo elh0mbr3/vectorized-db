@@ -7,7 +7,7 @@ def process_words(words: str) -> list:
   lowercased: str = words.lower()
     
   # Phase 2 - punctuation removal (using regex)
-  new_lowercased: str = re.sub(r"[!,.;?]+", "", lowercased)
+  new_lowercased: str = re.sub(r"[!,.;:?_*#>\'\"\(\)\[\]]+", "", lowercased)
     
   # Phase 3 - splitting
   new_words = new_lowercased.split()

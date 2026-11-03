@@ -37,7 +37,11 @@ def search(search_input: str):
 async def upload_document(file: UploadFile = File(...)):
   content = await file.read()
   text_input = content.decode("utf-8")
-  doc_name = file.filename.replace(".txt", "")
+  # Strips extension based on file type:
+  if file.filename.endswith(".txt"):
+    doc_name = file.filename.replace(".txt", "")
+  else:
+    doc_name = file.filename.replace(".md", "")
   vector_db.ingest(doc_name, text_input)
   store_vectors(vector_db)
   return {"message": "Success"}
