@@ -34,23 +34,27 @@ function fetchVectors() {
   fetch("/api/vectors")
   .then(response => response.json())
   .then(data => {
-        // Displays the master vocabulary list as a scrollable container
+    // Displays the master vocabulary list as a scrollable container
     const vocabContainer = document.getElementById("vocab-container");
-    const totalWords = data.master_vocabulary.length
-    const tagsHtml = data.master_vocabulary
-    .map(word => `<span class="vocab-tag">${word}</span>`)
-    .join("");
+    const totalLabel = document.createElement("strong");
+    totalLabel.textContent = "Total global dimensions:";
+    const total = document.createElement("div");
+    total.append(totalLabel, ` ${data.master_vocabulary.length}`);
 
-    vocabContainer.innerHTML = `
-      <div><strong>Total global dimensions:</strong> ${totalWords}</div>
-      <div class="vocab-scroll">${tagsHtml}</div>
-    `
+    const vocabScroll = document.createElement("div");
+    vocabScroll.className = "vocab-scroll";
+    for (const word of data.master_vocabulary) {
+      const tag = document.createElement("span");
+      tag.className = "vocab-tag";
+      tag.textContent = word;
+      vocabScroll.appendChild(tag);
+    }
+
+    vocabContainer.replaceChildren(total, vocabScroll);
     
     // Clears and rebuild the list of document vectors
     const vectorsList = document.getElementById("vector-container");
     vectorsList.innerHTML = "";
-
-
 
     for (const [docName, vectorArray] of Object.entries(data.vector)) {
       const listItem = document.createElement("li");
@@ -63,11 +67,17 @@ function fetchVectors() {
       const uniqueWords = vectorArray.filter(val => val > 0).length;
 
       // Shows metadata instead of raw floats
-      listItem.innerHTML = `
-        <span><strong>${docName}</strong> - ${uniqueWords} unique words</span>
-        <button onclick="deleteDocument('${docName}')" class="delete-btn">Delete</button>
-      `;
+      const label = document.createElement("span");
+      const nameElement = document.createElement("strong");
+      nameElement.textContent = docName;
+      label.append(nameElement, ` - ${uniqueWords} unique words`);
 
+      const deleteButton = document.createElement("button");
+      deleteButton.className = "delete-btn";
+      deleteButton.textContent = "Delete";
+      deleteButton.addEventListener("click", () => deleteDocument(docName));
+
+      listItem.append(label, deleteButton);
       vectorsList.appendChild(listItem);
     }
   })
