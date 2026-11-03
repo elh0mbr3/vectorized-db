@@ -30,14 +30,14 @@ def store_vectors(vector_db: VectorDB):
 def convert_text(file_path: str = "") -> str:
   if file_path == "":
     raise FileNotFoundError
-  with open (file=file_path, mode="r") as f:
+  with open(file=file_path, mode="r", encoding="utf-8") as f:
     return f.read()
   
 # Loads vectors into a program
 def load_vectors() -> VectorDB:
   try:
     # Uses the absolute path instead of a hardcoded string
-    with open(file=db_path, mode="r") as f:
+    with open(file=db_path, mode="r", encoding="utf-8") as f:
       vector_db = VectorDB()
       dictionary = dict(json.load(f))
       master_vocabulary: set = set(dictionary["master_vocabulary"])
