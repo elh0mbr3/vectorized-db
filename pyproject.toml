@@ -5,7 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "vectorized-db"
 version = "0.1.0"
-dependencies = ["fastapi", "uvicorn"]
+dependencies = [
+  "fastapi>=0.162.0", 
+  "uvicorn>=0.54.0",
+  "python-multipart>=0.0.32",
+]
 
 [project.scripts]
 vectordb-ui = "vectorized_db.main:start_server"
