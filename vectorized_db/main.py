@@ -6,12 +6,33 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi import HTTPException
 from vectorized_db.vectordb import VectorDB
-from vectorized_db.file_handler import load_vectors, store_vectors
+from vectorized_db.file_handler import load_vectors, store_vectors, db_path
 import uvicorn
 import os
 
+# Checks before loading since load_vectors() creates an empty database when no file exists
+is_first_run: bool = not os.path.exists(db_path)
+
 vector_db: VectorDB = load_vectors()
 print(f"Total documents loaded: {len(vector_db.vectors)}")
+
+# Auto-loads startup files for fresh installs
+if is_first_run:
+  current_dir = os.path.dirname(os.path.abspath(__file__))
+  samples_dir = os.path.join(current_dir, "sample_docs")
+  
+  # Safely creates the folder if it doesn't exist
+  os.makedirs(samples_dir, exist_ok=True)
+  
+  for filename in os.listdir(samples_dir):
+    if filename.endswith((".txt", ".md")):
+      file_path = os.path.join(samples_dir, filename)
+      with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
+        vector_db.ingest(os.path.splitext(filename)[0], content)
+        print(f"Auto-loaded test file: {filename}")
+  
+  store_vectors(vector_db)
 
 app: FastAPI = FastAPI()
 app.add_middleware(CORSMiddleware, allow_methods=["*"], allow_credentials=True, allow_origins=["*"], allow_headers=["*"])

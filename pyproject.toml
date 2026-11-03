@@ -15,4 +15,4 @@ packages = ["vectorized_db"]
 include-package-data = true
 
 [tool.setuptools.package-data]
-vectorized_db = ["static/*"]
+vectorized_db = ["static/*", "sample_docs/*"]
