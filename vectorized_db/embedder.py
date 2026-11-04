@@ -35,5 +35,4 @@ def build_vector(word_set: set, word_list: list, name: str = "") -> Vector:
   sorted_set = sorted(word_set)
   for word in sorted_set:
     numbers.append(word_list.count(word))
-  print(numbers)
   return Vector("x", numbers)
