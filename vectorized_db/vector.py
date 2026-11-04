@@ -47,7 +47,7 @@ class Vector:
     temp: list = []
     for i in range(0, self.get_size()):
       temp.append(self.entries[i] + vector.entries[i])
-    return Vector(temp)
+    return Vector(self.name, temp)
   
   # Multiplies vector entries by a scalar number
   def multiply_by(self, scalar: float):
@@ -55,7 +55,7 @@ class Vector:
     for entry in self.entries:
       entry *= scalar
       temp.append(entry)
-    return Vector(temp)
+    return Vector(self.name, temp)
     
   # Returns a magnitude value
   def calculate_magnitude(self) -> float:
@@ -65,12 +65,14 @@ class Vector:
       sum += pow(entry, 2)
     return sqrt(sum)
   
-  # Returns a unit vector
+  # Returns a unit vector or a zero vector if the magnitude is 0
   def unit_vector(self):
+    if self.magnitude == 0:
+      return Vector(self.name, [0.0] * self.get_size()) # Creates a list as long as this vector
     temp: list = []
     for entry in self.entries:
       temp.append(entry / self.magnitude)
-    return Vector(temp)
+    return Vector(self.name, temp)
   
   # Returns the cosine of the angle between two vectors
   def cosine_similarity(self, vector) -> float:
