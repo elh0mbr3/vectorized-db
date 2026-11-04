@@ -47,7 +47,9 @@ class VectorDB:
     
     for doc_name, data in self.vectors.items():
       cosine: float = data["vector"].cosine_similarity(query_vector)
-      temp.append((doc_name, cosine))
+      # Skips documents that share no words with the query
+      if cosine > 0:
+        temp.append((doc_name, cosine))
       
     temp = sorted(temp, key=lambda x: x[1], reverse=True)
     

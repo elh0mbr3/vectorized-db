@@ -102,12 +102,17 @@ function performSearch() {
     console.log("Search payload:", data);
     resultsList.innerHTML = ""; // Clear loading text
 
-    // Display each matched document and its formated similarity score
+    // Displays each matched document and its formatted similarity score
     for (const[docName, score] of Object.entries(data)) {
       const listItem = document.createElement("li");
       const cleanScore = typeof score === 'number' ? score.toFixed(4) : score;
       listItem.textContent = `${docName} - Similarity: ${cleanScore}`;
       resultsList.appendChild(listItem);
+    }
+
+    // Shows a message when no document shares words with the query
+    if (resultsList.children.length === 0) {
+      resultsList.textContent = "No matching documents.";
     }
   })
   .catch(error => {
