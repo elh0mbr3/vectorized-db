@@ -1,6 +1,7 @@
 import re
 import os
 from vectorized_db.vector import Vector
+from collections import Counter
 
 # Gets the path to the folder where embedder.py is
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -31,8 +32,9 @@ def unique_set(word_list: list) -> set:
 
 # Returns a vector built of counters of unique words appearing in a list of words
 def build_vector(word_set: set, word_list: list, name: str = "") -> Vector:
+  # Counts every word in one pass
+  counts: Counter = Counter(word_list)
   numbers: list[int] = []
-  sorted_set = sorted(word_set)
-  for word in sorted_set:
-    numbers.append(word_list.count(word))
+  for word in sorted(word_set):
+    numbers.append(counts[word])
   return Vector("x", numbers)
