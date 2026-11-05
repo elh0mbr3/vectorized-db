@@ -3,10 +3,8 @@ from vectorized_db.vector import Vector
 import os
 import json
 
-# Dynamically builds the absolute path to the database folder
-current_dir = os.path.dirname(os.path.abspath(__file__))
-root_dir = os.path.dirname(current_dir) # Goes up one level to the root
-db_dir = os.path.join(root_dir, "database")
+# Stores the database in the user's home folder
+db_dir = os.path.join(os.path.expanduser("~"), ".vectorized_db")
 db_path = os.path.join(db_dir, "vectors.json")
 
 # Stores VectordDB.vectors in a json file
