@@ -1,4 +1,4 @@
-// Polls the server every 5 seconds to update the online/offlnie status indicator
+// Polls the server every 5 seconds to update the online/offline status indicator
 function checkStatus() {
   fetch("/api/status")
   .then(() => {
@@ -167,5 +167,6 @@ document.getElementById("search-form").addEventListener("submit", event => {
 });
 
 // Initialises application state on load
+checkStatus();
 setInterval(checkStatus, 5000); // Checks server status every 5 seconds
 fetchVectors(); // Loads initial database contents
