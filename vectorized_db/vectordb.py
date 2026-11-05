@@ -25,9 +25,13 @@ class VectorDB:
     words: set = unique_set(processed_text)
     self.master_vocabulary.update(words)
     self.vectors[name] = {"text": processed_text, "vector": None}
-    for i, j in self.vectors.items():
-      vector: Vector = build_vector(self.master_vocabulary, j["text"], name=i)
-      self.vectors[i] = {"text": j["text"], "vector": vector}
+    self.rebuild_vectors()
+    
+  # Rebuilds every document's vector to match the current master vocabulary
+  def rebuild_vectors(self):
+    for name, data in self.vectors.items():
+      vector: Vector = build_vector(self.master_vocabulary, data["text"], name=name)
+      self.vectors[name] = {"text": data["text"], "vector": vector}
   
   # Returns a vector without removing it from the list
   def get(self, name:str) -> Vector:
@@ -36,6 +40,14 @@ class VectorDB:
   # Removes and returns a vector
   def pop(self, name: str) -> Vector:
     return self.vectors.pop(name).pop("vector")
+  
+  # Removes a document and any vocabulary words that no remaining document uses
+  def remove(self, name: str):
+    del self.vectors[name]
+    self.master_vocabulary = set()
+    for data in self.vectors.values():
+      self.master_vocabulary.update(data["text"])
+    self.rebuild_vectors()
   
   # Returns a dictionary of sorted key-value elements depending how similar they are to an input query
   def search(self, search_input: str) -> dict:

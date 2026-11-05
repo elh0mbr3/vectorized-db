@@ -71,7 +71,7 @@ async def delete_document(doc_name: str):
     raise HTTPException(status_code=404, detail="Document not found")
   
   # Removes the document vector
-  del vector_db.vectors[doc_name]
+  vector_db.remove(doc_name)
   
   # Saves the updated state to disk to ensure the deletion persists across reboots
   store_vectors(vector_db)
