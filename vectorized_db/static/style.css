@@ -31,18 +31,13 @@ input[type="text"], input[type="file"] {
   margin-right: 8px;
 }
 
-/* Formats sections and divs as elevated white cards with a slight drop shadow */
-.upload-section, div {
+/* Formats page sections as elevated white cards with a slight drop shadow */
+.card {
   background: white;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   margin-bottom: 20px;
-}
-
-/* Removes standard horizontal lines from the layour to maintain a clean look of div cards */
-hr {
-  display: none;
 }
 
 /* Cleans up heading spacing so they sit nicely inside your white cards */
