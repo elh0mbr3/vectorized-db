@@ -160,6 +160,12 @@ async function uploadDocument() {
   }
 }
 
+// Runs a search when the search form is submitted by pressing Enter key or clicking on Search button
+document.getElementById("search-form").addEventListener("submit", event => {
+  event.preventDefault(); // Stops the browser from reloading the page
+  performSearch();
+});
+
 // Initialises application state on load
 setInterval(checkStatus, 5000); // Checks server status every 5 seconds
 fetchVectors(); // Loads initial database contents
