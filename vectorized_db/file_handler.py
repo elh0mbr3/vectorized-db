@@ -46,7 +46,7 @@ def load_vectors() -> VectorDB:
         integer_numbers: list[int] = []
         for number in raw_numbers:
           integer_numbers.append(int(number))
-        vector: Vector = Vector(name=doc_name, entries=integer_numbers)
+        vector: Vector = Vector(entries=integer_numbers)
         vector_db.vectors[doc_name] = {"text": processed_text, "vector": vector}
       return vector_db
   except FileNotFoundError:

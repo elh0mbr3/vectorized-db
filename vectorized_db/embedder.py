@@ -31,10 +31,10 @@ def unique_set(word_list: list) -> set:
   return set(word_list)
 
 # Returns a vector built of counters of unique words appearing in a list of words
-def build_vector(word_set: set, word_list: list, name: str = "") -> Vector:
+def build_vector(word_set: set, word_list: list) -> Vector:
   # Counts every word in one pass
   counts: Counter = Counter(word_list)
   numbers: list[int] = []
   for word in sorted(word_set):
     numbers.append(counts[word])
-  return Vector("x", numbers)
+  return Vector(numbers)

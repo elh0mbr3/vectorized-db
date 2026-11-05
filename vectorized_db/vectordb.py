@@ -30,7 +30,7 @@ class VectorDB:
   # Rebuilds every document's vector to match the current master vocabulary
   def rebuild_vectors(self):
     for name, data in self.vectors.items():
-      vector: Vector = build_vector(self.master_vocabulary, data["text"], name=name)
+      vector: Vector = build_vector(self.master_vocabulary, data["text"])
       self.vectors[name] = {"text": data["text"], "vector": vector}
   
   # Returns a vector without removing it from the list
@@ -52,7 +52,7 @@ class VectorDB:
   # Returns a dictionary of sorted key-value elements depending how similar they are to an input query
   def search(self, search_input: str) -> dict:
     processed_query: list = process_words(search_input)
-    query_vector: Vector = build_vector(self.master_vocabulary, processed_query, name="search_query")
+    query_vector: Vector = build_vector(self.master_vocabulary, processed_query)
     
     sorted_dict: dict = {}
     temp: list = []
