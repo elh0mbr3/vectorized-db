@@ -40,7 +40,7 @@ def return_status():
 
 @app.get(path="/api/vectors")
 def load_dictionary():
-  export_data: dict = {"master_vocabulary": list(vector_db.master_vocabulary)}
+  export_data: dict = {"master_vocabulary": sorted(vector_db.master_vocabulary)}
   document_vectors: dict = {}
   for doc_name, data in vector_db.vectors.items():
     document_vectors[doc_name] = data["vector"].entries

@@ -14,7 +14,7 @@ def store_vectors(vector_db: VectorDB):
   
   # Redefines Python dictionaries as JSON object
   export_data: dict = {}
-  export_data["master_vocabulary"] = list(vector_db.master_vocabulary)
+  export_data["master_vocabulary"] = sorted(vector_db.master_vocabulary)
   safe_vectors: dict = {}
   for name, vectors in vector_db.vectors.items():
     safe_vectors[name] = {"text": vectors["text"], "numbers": vectors["vector"].entries}
