@@ -7,12 +7,9 @@ class VectorDB:
   vectors: dict[str, dict]
   master_vocabulary: set[str]
   
-  # Initialises a vector database object
-  def __init__(self, vectors=None):
-    if vectors == None:
-      self.vectors = {}
-    else:
-      self.vectors = vectors
+  # Initialises an empty vector database
+  def __init__(self):
+    self.vectors = {}
     self.master_vocabulary = set()
   
   # Returns a string of vectors
@@ -32,14 +29,6 @@ class VectorDB:
     for name, data in self.vectors.items():
       vector: Vector = build_vector(self.master_vocabulary, data["text"])
       self.vectors[name] = {"text": data["text"], "vector": vector}
-  
-  # Returns a vector without removing it from the list
-  def get(self, name:str) -> Vector:
-    return self.vectors.get(name).get("vector")
-  
-  # Removes and returns a vector
-  def pop(self, name: str) -> Vector:
-    return self.vectors.pop(name).pop("vector")
   
   # Removes a document and any vocabulary words that no remaining document uses
   def remove(self, name: str):
