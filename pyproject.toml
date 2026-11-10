@@ -10,6 +10,7 @@ dependencies = [
   "uvicorn>=0.54.0",
   "python-multipart>=0.0.32",
 ]
+requires-python = ">=3.10"
 
 [project.scripts]
 vectordb-ui = "vectorized_db.main:start_server"
