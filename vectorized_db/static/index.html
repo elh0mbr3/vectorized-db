@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>VectorizedDB</title>
+</head>
+<body>
+  <img src="Vectorized-DB.png" class="logo">
+
+  <div class="card">Backend status: <span id="server-status" style="font-weight: bold;">Checking...</span></div>
+
+  <div class="card">
+    <h3>Master vocabulary:</h3>
+    <p id="vocab-container" class="results-output">Loading container...</p>
+  </div>
+
+  <div class="card">
+    <h3>Document vectors:</h3>
+    <ul id="vector-container" class="results-output"></ul>
+  </div>
+
+  <div class="card">
+    <h3>Search documents</h3>
+    <form id="search-form" class="form-group">
+      <input id="search-box" type="text" placeholder="Type words to search...">
+      <button type="submit" id="search-button">Search</button>
+    </form>
+    <ul id="search-results"></ul>
+  </div>
+
+  <div class="card">
+    <h3>Upload new document</h3>
+    <div class="form-group">
+      <input type="file" id="docUpload" accept=".txt,.md"><br><br>
+      <button onclick="uploadDocument()">Upload Document</button>
+    </div>
+    <p id="upload-status"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

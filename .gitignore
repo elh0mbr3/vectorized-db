@@ -1,7 +1,10 @@
 __pycache__/
 database/
-*.txt
 /test/
 test_files.py 
 test.py
 .venv/
+*.egg-info/
+build/
+dist/
+.vscode/
