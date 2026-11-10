@@ -26,10 +26,6 @@ def process_words(words: str) -> list:
   new_words = [word for word in raw_words if word not in STOPWORDS_SET]
   return new_words
 
-# Returns a set of unique words removing duplicates
-def unique_set(word_list: list) -> set:
-  return set(word_list)
-
 # Returns a vector built of counters of unique words appearing in a list of words
 def build_vector(word_set: set, word_list: list) -> Vector:
   # Counts every word in one pass

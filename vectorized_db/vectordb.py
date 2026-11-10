@@ -1,6 +1,6 @@
 # Imports
 from vectorized_db.vector import Vector
-from vectorized_db.embedder import unique_set, build_vector, process_words
+from vectorized_db.embedder import build_vector, process_words
 
 # A vector database class
 class VectorDB:
@@ -16,12 +16,11 @@ class VectorDB:
   def __str__(self):
     return f"{self.master_vocabulary} <> {self.vectors}"
   
-  # Adds a string to process it and adds it to a master_vocabulary
+  # Adds or replaces a document, then rebuilds the vocabulary and all vectors
   def ingest(self, name: str, text_input: str):
     processed_text: list = process_words(text_input)
-    words: set = unique_set(processed_text)
-    self.master_vocabulary.update(words)
     self.vectors[name] = {"text": processed_text, "vector": None}
+    self.rebuild_vocabulary()
     self.rebuild_vectors()
     
   # Rebuilds every document's vector to match the current master vocabulary
@@ -29,13 +28,17 @@ class VectorDB:
     for name, data in self.vectors.items():
       vector: Vector = build_vector(self.master_vocabulary, data["text"])
       self.vectors[name] = {"text": data["text"], "vector": vector}
+
+  # Rebuilds the master vocabulary from the words of all current documents
+  def rebuild_vocabulary(self):
+    self.master_vocabulary = set()
+    for data in self.vectors.values():
+      self.master_vocabulary.update(data["text"])
   
   # Removes a document and any vocabulary words that no remaining document uses
   def remove(self, name: str):
     del self.vectors[name]
-    self.master_vocabulary = set()
-    for data in self.vectors.values():
-      self.master_vocabulary.update(data["text"])
+    self.rebuild_vocabulary()
     self.rebuild_vectors()
   
   # Returns a dictionary of sorted key-value elements depending how similar they are to an input query
