@@ -20,9 +20,11 @@ def store_vectors(vector_db: VectorDB):
     safe_vectors[name] = {"text": vectors["text"], "numbers": vectors["vector"].entries}
   export_data["documents"] = safe_vectors
   
-  # Saves to the absolute path
-  with open(file=db_path, mode="w", encoding="utf-8") as f:
+  # Writes to a temporary file first, then swaps it in, so a crash never leaves a half-written database
+  temp_path = db_path + ".tmp"
+  with open(file=temp_path, mode="w", encoding="utf-8") as f:
     json.dump(export_data, f, indent=1)
+  os.replace(temp_path, db_path)
 
 # Converts content from .txt file into a Python string
 def convert_text(file_path: str = "") -> str:
@@ -50,7 +52,13 @@ def load_vectors() -> VectorDB:
         vector_db.vectors[doc_name] = {"text": processed_text, "vector": vector}
       return vector_db
   except FileNotFoundError:
-    print("No existing database found. Initialising a new database")
+    print("No existing database found. Initialising a new database.")
+    return VectorDB()
+  except (json.JSONDecodeError, KeyError, ValueError, TypeError, AttributeError):
+    # Keeps the damaged file as a backup instead of overwriting it on the next save
+    backup_path = db_path + ".broken"
+    os.replace(db_path, backup_path)
+    print(f"The database file was damaged and has been moved to {backup_path}")
     return VectorDB()
   
     
