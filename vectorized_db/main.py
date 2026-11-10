@@ -53,13 +53,20 @@ def search(search_input: str):
 
 @app.post("/api/upload")
 async def upload_document(file: UploadFile = File(...)):
+  # Rejects unsupported file types before reading them
+  if not file.filename.lower().endswith((".txt", ".md")):
+    raise HTTPException(status_code=400, detail="Only .txt and .md files are supported")
+  
   content = await file.read()
-  text_input = content.decode("utf-8")
-  # Strips extension based on file type:
-  if file.filename.endswith(".txt"):
-    doc_name = file.filename.replace(".txt", "")
-  else:
-    doc_name = file.filename.replace(".md", "")
+  
+  # Rejects files that aren't valid UTF-8 text
+  try:
+    text_input = content.decode("utf-8")
+  except UnicodeDecodeError:
+    raise HTTPException(status_code=400, detail="The file must be UTF-8 encoded text")
+  
+  # Strips only the real extension, matching how sample documents are named
+  doc_name = os.path.splitext(file.filename)[0]
   vector_db.ingest(doc_name, text_input)
   store_vectors(vector_db)
   return {"message": "Success"}

@@ -151,7 +151,8 @@ async function uploadDocument() {
       statusText.className = "success-msg";
       fileInput.value=""; // Clears the file picker
     } else {
-      statusText.textContent = "Upload failed on the server.";
+      const error = await response.json();
+      statusText.textContent = error.detail;
       statusText.className = "error-msg";
     }
   } catch (error) {
